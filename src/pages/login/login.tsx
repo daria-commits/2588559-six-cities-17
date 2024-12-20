@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Login.css'; // Vous pouvez créer un fichier CSS séparé pour styliser la page de connexion
+
 
 function Login() {
   const [email, setEmail] = useState('');
