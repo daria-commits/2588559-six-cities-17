@@ -1,11 +1,26 @@
 
+import { OfferType } from 'src/types';
 
-function Map() {
+type MapProps = {
+  offers: OfferType[];
+  activeOfferId: string | null;
+};
+
+function Map({ offers, activeOfferId }: MapProps) {
   return (
-    <section className="cities__map map">
-      {/* Intégrer ici votre logique de carte */}
-      <div>Map will be displayed here</div>
-    </section>
+    <div className="map">
+      <p>Map Placeholder</p>
+      {offers.map((offer) => (
+        <div
+          key={offer.id}
+          style={{
+            color: offer.id === activeOfferId ? 'red' : 'black',
+          }}
+        >
+          {offer.title} - ({offer.location.latitude}, {offer.location.longitude})
+        </div>
+      ))}
+    </div>
   );
 }
 

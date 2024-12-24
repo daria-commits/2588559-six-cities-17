@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import du hook useNavigate
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
   const [user, setUser] = useState<{ email: string | null }>({ email: null }); // Par défaut, aucun utilisateur connecté
