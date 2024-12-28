@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
-
-type RatingType = 1 | 2 | 3 | 4 | 5;
+import { OfferType } from 'src/types';
 
 type FormDataType = {
-  firstname: string;
   comment: string;
-  rating: RatingType | null;
+  rating: string;
 };
 
-interface AddCommentFormProps {
-  offerId: string; // ID de l'offre à laquelle le commentaire est lié
+interface CommentProps {
+  offers: OfferType[];
+  activeOfferId: string | null;
+  onAddComment: (offerId: string, comment: string, rating: string) => void;
 }
 
-const AddCommentForm: React.FC<AddCommentFormProps> = ({ offerId }) => {
+const AddCommentForm: React.FC<CommentProps> = ({ offers, activeOfferId, onAddComment }) => {
   const [formData, setFormData] = useState<FormDataType>({
-    firstname: '',
     comment: '',
-    rating: null,
+    rating: '',
   });
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Gestion des champs de texte
   const handleFieldChange = (
     evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -29,121 +26,151 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({ offerId }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Gestion des changements de note
-  const handleRatingChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const newRating = parseInt(evt.target.value, 10) as RatingType; // Utilisation de `10` comme radix
-    setFormData({ ...formData, rating: newRating });
-  };
-
-  // Soumission du formulaire
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
-    setIsSubmitted(true);
+    if (activeOfferId && formData.comment.length >= 50 && formData.rating) {
+      onAddComment(activeOfferId, formData.comment, formData.rating);
+    }
   };
 
-  // Fonction pour obtenir le titre de la note
-  const getRatingTitle = (star: number): string => {
-    const titles: Record<number, string> = {
-      5: 'perfect',
-      4: 'good',
-      3: 'not bad',
-      2: 'badly',
-      1: 'terribly',
-    };
-    return titles[star];
-  };
 
-  // Afficher les détails si le formulaire est soumis
-  if (isSubmitted) {
-    return (
-      <Details firstname={formData.firstname} comment={formData.comment} />
-    );
+  if (!activeOfferId) {
+    return null;
   }
 
   return (
-    <form className="reviews__form form" onSubmit={handleSubmit}>
-      <h2>Add your comment</h2>
-
-      <label htmlFor="firstname">First Name:</label>
-      <input
-        type="text"
-        id="firstname"
-        name="firstname"
-        value={formData.firstname}
-        onChange={handleFieldChange}
-        required
-      />
-
-      <label htmlFor="comment">Comment:</label>
-      <textarea
-        id="comment"
-        name="comment"
-        value={formData.comment}
-        onChange={handleFieldChange}
-        placeholder="Tell how was your stay, what you like and what can be improved"
-        required
-        minLength={50}
-      />
-      {formData.comment.length < 50 && formData.comment.length > 0 && (
-        <p>Your comment must be at least 50 characters long.</p>
-      )}
-
-      <div className="reviews__rating-form form__rating">
-        {[5, 4, 3, 2, 1].map((star) => (
-          <div key={star}>
+    <form className='offer__host' onSubmit={handleSubmit}>
+      <h2 className='offer__host-title'>Meet the host</h2>
+      <label
+        htmlFor='rating'
+        className='reviews__label form__label'
+        style={{
+          display: 'block',
+          fontSize: '16px',
+          marginBottom: '8px',
+          color: '#555',
+        }}
+      >
+        Rate your experience:
+      </label>
+      <div className='reviews__rating-form form__rating' style={{ marginBottom: '20px' }}>
+        {[5, 4, 3, 2, 1].map((value) => (
+          <React.Fragment key={value}>
             <input
-              className="form__rating-input visually-hidden"
-              type="radio"
-              id={`${star}-stars`}
-              value={star}
-              name="rating"
-              checked={formData.rating === star}
-              onChange={handleRatingChange}
+              className='form__rating-input visually-hidden'
+              name='rating'
+              value={value}
+              id={`${value}-stars`}
+              type='radio'
+              onChange={handleFieldChange}
+              checked={formData.rating === String(value)}
+              required
             />
             <label
-              htmlFor={`${star}-stars`}
-              className="reviews__rating-label form__rating-label"
-              title={getRatingTitle(star)}
+              htmlFor={`${value}-stars`}
+              className='reviews__rating-label form__rating-label'
+              title={
+                value === 5
+                  ? 'perfect'
+                  : value === 4
+                    ? 'good'
+                    : value === 3
+                      ? 'not bad'
+                      : value === 2
+                        ? 'badly'
+                        : 'terribly'
+              }
+              style={{
+                cursor: 'pointer',
+              }}
             >
-              <svg className="form__star-image" width="37" height="33">
-                <use xlinkHref="#icon-star" />
+              <svg
+                className='form__star-image'
+                width='37'
+                height='33'
+                fill={Number(formData.rating) >= value ? '#ffc107' : '#ccc'}
+                style={{ transition: 'fill 0.3s ease' }}
+              >
+                <use xlinkHref='#icon-star'></use>
               </svg>
             </label>
-          </div>
+          </React.Fragment>
         ))}
       </div>
 
+      <label
+        htmlFor='comment'
+        className='form__label'
+        style={{
+          display: 'block',
+          fontSize: '16px',
+          marginBottom: '8px',
+          color: '#555',
+        }}
+      >
+        Comment:
+      </label>
+      <textarea
+        className='reviews__textarea form__textarea'
+        id='comment'
+        name='comment'
+        value={formData.comment}
+        onChange={handleFieldChange}
+        placeholder='Tell how was your stay, what you like and what can be improved'
+        required
+        minLength={50}
+        style={{
+          width: '100%',
+          fontSize: '16px',
+          padding: '10px',
+          marginBottom: '20px',
+          border: '1px solid #ccc',
+          borderRadius: '5px',
+          minHeight: '100px',
+          resize: 'none',
+          boxSizing: 'border-box',
+        }}
+      />
+
+      {formData.comment.length < 50 && formData.comment.length > 0 && (
+        <p
+          className='reviews__help'
+          style={{
+            fontSize: '14px',
+            color: '#ff6f61',
+            marginBottom: '20px',
+          }}
+        >
+          Your comment must be at least <b>50 characters long.</b>
+        </p>
+      )}
       <button
-        className="reviews__submit form__submit button"
-        type="submit"
-        disabled={
-          !formData.rating ||
-          formData.comment.length < 50 ||
-          !formData.firstname
-        }
+        className='reviews__submit form__submit button'
+        type='submit'
+        disabled={formData.comment.length < 50 || !formData.rating}
+        style={{
+          width: '25%',
+          fontSize: '16px',
+          fontWeight: 'bold',
+          padding: '10px',
+          color: '#fff',
+          backgroundColor:
+            formData.comment.length < 50 || !formData.rating
+              ? '#ccc'
+              : '#007bff',
+          border: 'none',
+          borderRadius: '5px',
+          cursor:
+            formData.comment.length < 50 || !formData.rating
+              ? 'not-allowed'
+              : 'pointer',
+          transition: 'background-color 0.3s ease',
+        }}
       >
         Submit
       </button>
     </form>
   );
 };
-
-const Details: React.FC<{
-  firstname: string;
-  comment: string;
-}> = ({ firstname, comment }) => (
-  <div>
-    <h2>Review Details:</h2>
-    <p>
-      <b>First Name: </b>
-      {firstname}
-    </p>
-    <p>
-      <b>Comment: </b>
-      {comment}
-    </p>
-  </div>
-);
-
 
 export default AddCommentForm;

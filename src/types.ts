@@ -20,4 +20,16 @@ export interface OfferType {
     isPremium: boolean;
     rating: number;
     previewImage: string;
+    features: {
+      wifi: boolean;
+      washingMachine: boolean;
+      towels: boolean;
+      heating: boolean;
+      coffeeMachine: boolean;
+      babySeat: boolean;
+      kitchen: boolean;
+      dishwasher: boolean;
+      cableTV: boolean;
+      fridge: boolean;
+    };
   }
