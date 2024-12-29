@@ -6,6 +6,7 @@ type MapProps = {
   activeOfferId: string | null;
 };
 
+
 function Map({ offers, activeOfferId }: MapProps) {
   return (
     <div className="map">
