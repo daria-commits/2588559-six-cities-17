@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { OfferType } from 'src/types';
-
+import Map from '../map/map';
 
 type CitiesProps = {
   offers: OfferType[];
 };
+
 
 function Cities({ offers }: CitiesProps) {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
@@ -17,7 +18,7 @@ function Cities({ offers }: CitiesProps) {
   return (
     <div className="cities">
 
-      <div className="cities__places-container container">
+      <div className="cities__places-container container style={{ display: 'flex' }}">
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">{offers.length} places to stay</b>
@@ -51,18 +52,9 @@ function Cities({ offers }: CitiesProps) {
             ))}
           </div>
         </section>
-        <div className="cities__right-section" >
-          <section className="cities__map map" style={{
-
-            width: '100%',
-            height: '100%',
-            overflow: 'hidden',
-            position: 'relative'
-          }}
-          >
-            <svg className="map__icon map__icon--arrow" width="7" height="4" style={{ position: 'absolute', top: '10px', right: '10px' }}>
-              <use xlinkHref="#icon-arrow-select"></use>
-            </svg>
+        <div className="cities__map-container" style={{ flex: 1 }}>
+          <section className="offer">
+            <Map offers={offers} activeOfferId={activeOfferId} />
           </section>
         </div>
       </div>

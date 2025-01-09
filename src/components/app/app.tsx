@@ -15,7 +15,6 @@ function App({ offers }: Props) {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Route avec Layout comme parent */}
         <Route path="/" element={<Layout />}>
           <Route index element={<Main offers={offers} />} />
           <Route path="favorites" element={<Favorites offers={OFFERS_MOCK} />} />

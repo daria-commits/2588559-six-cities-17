@@ -1,7 +1,7 @@
 import { OfferType } from 'src/types';
 
 export const OFFERS_MOCK: OfferType[] = [
-  // Amsterdam Offers (5)
+
   {
     id: '6af6f711-c28d-4121-82cd-e0b462a27f00',
     title: 'Beautiful & luxurious studio at great location',
@@ -354,7 +354,7 @@ export const OFFERS_MOCK: OfferType[] = [
       fridge: true,
     },
   },
-  // Brussels Offers (5)
+
   {
     id: '9df9f011-e45d-61f3-96f9-g3e784c59g33',
     title: 'Charming studio near the beach',
@@ -531,7 +531,7 @@ export const OFFERS_MOCK: OfferType[] = [
     },
   },
 
-  // Cologne Offers (5)
+
   {
     id: '0ef0a121-f56e-72f4-a7fa-h4f895d60h44',
     title: 'Luxurious villa with private pool',
@@ -707,7 +707,7 @@ export const OFFERS_MOCK: OfferType[] = [
       fridge: true,
     },
   },
-  // Düsseldorf Offers (5)
+
   {
     id: 'b6f824ac-4234-4295-b319-0c548472e207',
     title: 'Luxury penthouse with Rhine river view',
