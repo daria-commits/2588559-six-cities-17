@@ -3,6 +3,7 @@ import { Icon, Marker, layerGroup } from 'leaflet';
 import useMap from '../usemap/usemap';
 import { OfferType } from 'src/types';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
+import 'leaflet/dist/leaflet.css';
 
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
@@ -50,17 +51,7 @@ function Map({ offers, activeOfferId }: MapProps) {
   }, [map, offers, activeOfferId]);
 
   return (
-    <div
-      style={{
-        height: '80%',
-        width: '100%',
-        margin: 'auto',
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-      }}
-      ref={mapRef}
-    >
-    </div>
+    <section className="cities__map map" ref={mapRef}> </section>
   );
 }
 
