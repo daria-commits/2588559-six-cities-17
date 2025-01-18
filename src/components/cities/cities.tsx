@@ -38,7 +38,7 @@ function Cities({ offers }: CitiesProps) {
             </ul>
           </form>
           <div className="cities__places-list places__list tabs__content">
-            {offers.map((offer, index) => (
+            {offers.map((offer) => (
               <article key= { offer.id }className="cities__card place-card"
                 onMouseEnter={handleActiveOfferChange && (() => handleActiveOfferChange(offer.id))}
                 onMouseLeave={handleActiveOfferChange && (() => handleActiveOfferChange(null))}>
