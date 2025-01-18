@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { OfferType } from 'src/types';
 import Map from '../map/map';
 
 type CitiesProps = {
   offers: OfferType[];
+
 };
 
 

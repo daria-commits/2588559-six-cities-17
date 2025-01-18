@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { OfferType } from 'src/types';
+
 
 type FormDataType = {
   comment: string;
@@ -7,12 +7,12 @@ type FormDataType = {
 };
 
 interface CommentProps {
-  offers: OfferType[];
+
   activeOfferId: string | null;
   onAddComment: (offerId: string, comment: string, rating: string) => void;
 }
 
-const AddCommentForm: React.FC<CommentProps> = ({ offers, activeOfferId, onAddComment }) => {
+const AddCommentForm: React.FC<CommentProps> = ({ activeOfferId, onAddComment }) => {
   const [formData, setFormData] = useState<FormDataType>({
     comment: '',
     rating: '',
@@ -69,17 +69,6 @@ const AddCommentForm: React.FC<CommentProps> = ({ offers, activeOfferId, onAddCo
             <label
               htmlFor={`${value}-stars`}
               className='reviews__rating-label form__rating-label'
-              title={
-                value === 5
-                  ? 'perfect'
-                  : value === 4
-                    ? 'good'
-                    : value === 3
-                      ? 'not bad'
-                      : value === 2
-                        ? 'badly'
-                        : 'terribly'
-              }
               style={{
                 cursor: 'pointer',
               }}

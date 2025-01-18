@@ -19,7 +19,7 @@ function App({ offers }: Props) {
           <Route index element={<Main offers={offers} />} />
           <Route path="favorites" element={<Favorites offers={OFFERS_MOCK} />} />
           <Route path="login" element={<Login />} />
-          <Route path="offer/:id" element={<Offer />} />
+          <Route path="offer/:id" element={<Offer offers={OFFERS_MOCK}/>} />
         </Route>
       </Routes>
     </BrowserRouter>

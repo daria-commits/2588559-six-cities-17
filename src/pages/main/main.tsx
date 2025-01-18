@@ -7,6 +7,7 @@ type Props = {
   offers: OfferType[];
 };
 
+
 function Main({ offers }: Props) {
   const [activeCity, setActiveCity] = useState<string>('Amsterdam');
 
