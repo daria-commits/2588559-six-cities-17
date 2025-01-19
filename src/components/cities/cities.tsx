@@ -17,7 +17,7 @@ function Cities() {
 
   return (
     <div className="cities">
-      <div className="cities__places-container container " style={{ display: 'flex' }}> {{/*zdes vstavit uslovie s empty city */}}
+      <div className="cities__places-container container " style={{ display: 'flex' }}>
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">{filteredOffers.length} places to stay in {activeCity}</b>
