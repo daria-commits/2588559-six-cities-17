@@ -28,9 +28,9 @@ function useMap(
         }
       );
 
-      instance.addLayer(layer); // Ajoute la couche à la carte
-      setMap(instance); // Stocke l'instance de la carte dans l'état
-      isRenderedRef.current = true; // Marque la carte comme rendue
+      instance.addLayer(layer);
+      setMap(instance);
+      isRenderedRef.current = true;
     }
   }, [mapRef, city]);
 

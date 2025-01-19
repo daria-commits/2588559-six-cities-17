@@ -6,7 +6,6 @@ import { RootState } from '../../store';
 function Navigation() {
   const dispatch = useDispatch();
   const activeCity = useSelector((state: RootState) => state.activeCity);
-  //dispatch — это метод, который: Отправляет экшен (action) в Redux.
   const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
   const handleCityClick = (city: string) => {
