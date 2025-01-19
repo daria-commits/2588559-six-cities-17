@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { OfferType } from 'src/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 import Map from '../map/map';
+import { Link } from 'react-router-dom';
 
-type CitiesProps = {
-  offers: OfferType[];
-
-};
-
-
-function Cities({ offers }: CitiesProps) {
+function Cities() {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
+  const offers = useSelector((state: RootState) => state.offers);
+  const activeCity = useSelector((state: RootState) => state.activeCity);
+
+  const filteredOffers = offers.filter((offer) => offer.city.name === activeCity);//Здесь предложения фильтруются по имени активного города, чтобы показать только те, которые принадлежат этому городу.
 
   const handleActiveOfferChange = (id: string | null) => {
     setActiveOfferId(id);
@@ -17,11 +17,10 @@ function Cities({ offers }: CitiesProps) {
 
   return (
     <div className="cities">
-
-      <div className="cities__places-container container style={{ display: 'flex' }}">
+      <div className="cities__places-container container " style={{ display: 'flex' }}> {{/*zdes vstavit uslovie s empty city */}}
         <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
-          <b className="places__found">{offers.length} places to stay</b>
+          <b className="places__found">{filteredOffers.length} places to stay in {activeCity}</b>
           <form className="places__sorting" action="#" method="get">
             <span className="places__sorting-caption">Sort by</span>
             <span className="places__sorting-type" tabIndex={0}>
@@ -30,22 +29,25 @@ function Cities({ offers }: CitiesProps) {
                 <use xlinkHref="#icon-arrow-select"></use>
               </svg>
             </span>
-            <ul className="places__options places__options--custom places__options--opened">
-              <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-              <li className="places__option" tabIndex={0}>Price: low to high</li>
-              <li className="places__option" tabIndex={0}>Price: high to low</li>
-              <li className="places__option" tabIndex={0}>Top rated first</li>
-            </ul>
           </form>
           <div className="cities__places-list places__list tabs__content">
-            {offers.map((offer) => (
-              <article key= { offer.id }className="cities__card place-card"
-                onMouseEnter={handleActiveOfferChange && (() => handleActiveOfferChange(offer.id))}
-                onMouseLeave={handleActiveOfferChange && (() => handleActiveOfferChange(null))}>
+            {filteredOffers.map((offer) => (
+              <article
+                key={offer.id}
+                className="cities__card place-card"
+                onMouseEnter={() => handleActiveOfferChange(offer.id)}
+                onMouseLeave={() => handleActiveOfferChange(null)}
+              >
                 <div className="cities__image-wrapper place-card__image-wrapper">
-                  <a href="#">
-                    <img className="place-card__image" src="img/room.jpg" width="260" height="200" alt={offer.title} />
-                  </a>
+                  <Link to={`/offer/${offer.id}`}>
+                    <img
+                      className="place-card__image"
+                      src="img/room.jpg"
+                      width="260"
+                      height="200"
+                      alt={offer.title}
+                    />
+                  </Link>
                 </div>
                 <div className="place-card__info">
                   <div className="place-card__price-wrapper">
@@ -53,15 +55,6 @@ function Cities({ offers }: CitiesProps) {
                       <b className="place-card__price-value">€{offer.price}</b>
                       <span className="place-card__price-text">/night</span>
                     </div>
-                    <button
-                      className="place-card__bookmark-button place-card__bookmark-button--active button"
-                      type="button"
-                    >
-                      <svg className="place-card__bookmark-icon" width="18" height="19">
-                        <use xlinkHref="#icon-bookmark"></use>
-                      </svg>
-                      <span className="visually-hidden">In bookmarks</span>
-                    </button>
                   </div>
                   <div className="place-card__rating rating">
                     <div className="place-card__stars rating__stars">
@@ -70,21 +63,19 @@ function Cities({ offers }: CitiesProps) {
                     </div>
                   </div>
                   <h2 className="place-card__name">
-                    <a href="#">{offer.title}</a>
+                    <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
                   </h2>
                   <p className="place-card__type">{offer.type}</p>
                 </div>
               </article>
             ))}
           </div>
-
         </section>
         <div className="cities__right-section" style={{ flex: 1 }}>
-          <Map offers={offers} activeOfferId={activeOfferId} />
+          <Map offers={filteredOffers} activeOfferId={activeOfferId} />
         </div>
       </div>
     </div>
-
   );
 }
 

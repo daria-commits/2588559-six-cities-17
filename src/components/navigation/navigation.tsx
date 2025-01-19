@@ -1,18 +1,16 @@
 
+import { useDispatch, useSelector } from 'react-redux';
+import { onCityChange } from '../../store/action';
+import { RootState } from '../../store';
 
-type NavigationProps = {
-  activeCity: string;
-  onCityChange: (city: string) => void;
-};
-
-function Navigation({ activeCity, onCityChange }: NavigationProps) {
-
-
+function Navigation() {
+  const dispatch = useDispatch();
+  const activeCity = useSelector((state: RootState) => state.activeCity);
+  //dispatch — это метод, который: Отправляет экшен (action) в Redux.
   const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
   const handleCityClick = (city: string) => {
-    onCityChange(city);
-
+    dispatch(onCityChange(city));
   };
 
   return (
