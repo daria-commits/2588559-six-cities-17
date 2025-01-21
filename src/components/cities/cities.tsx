@@ -3,13 +3,19 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import Map from '../map/map';
 import { Link } from 'react-router-dom';
-
+import Sorting from '../sorting/sorting';
+import { sortBy } from 'src/helper';
 function Cities() {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
   const offers = useSelector((state: RootState) => state.offers);
   const activeCity = useSelector((state: RootState) => state.activeCity);
+  const currentSort = useSelector((state: RootState) => state.currentSort);
 
-  const filteredOffers = offers.filter((offer) => offer.city.name === activeCity);//Здесь предложения фильтруются по имени активного города, чтобы показать только те, которые принадлежат этому городу.
+
+  const filteredOffers = offers.filter((offer) => offer.city.name === activeCity);
+
+
+  const sortedOffersForList = sortBy(filteredOffers, currentSort);
 
   const handleActiveOfferChange = (id: string | null) => {
     setActiveOfferId(id);
@@ -17,27 +23,28 @@ function Cities() {
 
   return (
     <div className="cities">
-      <div className="cities__places-container container " style={{ display: 'flex' }}> {{/*zdes vstavit uslovie s empty city */}}
-        <section className="cities__places places">
+      <div className="cities__places-container container" style={{ display: 'flex', flexDirection: 'row' }}>
+        {/* Left Section for Offers */}
+        <div className="cities__places-list-container" style={{ flex: 1, paddingRight: '20px' }}>
           <h2 className="visually-hidden">Places</h2>
-          <b className="places__found">{filteredOffers.length} places to stay in {activeCity}</b>
-          <form className="places__sorting" action="#" method="get">
-            <span className="places__sorting-caption">Sort by</span>
-            <span className="places__sorting-type" tabIndex={0}>
-              Popular
-              <svg className="places__sorting-arrow" width="7" height="4">
-                <use xlinkHref="#icon-arrow-select"></use>
-              </svg>
-            </span>
-          </form>
+          <b className="places__found">
+            {filteredOffers.length} places to stay in {activeCity}
+          </b>
+          <Sorting />
           <div className="cities__places-list places__list tabs__content">
-            {filteredOffers.map((offer) => (
+            {sortedOffersForList.map((offer) => (
               <article
                 key={offer.id}
                 className="cities__card place-card"
                 onMouseEnter={() => handleActiveOfferChange(offer.id)}
                 onMouseLeave={() => handleActiveOfferChange(null)}
               >
+                {offer.isPremium && (
+                  <div className="place-card__mark">
+                    <span>Premium</span>
+                  </div>
+                )}
+
                 <div className="cities__image-wrapper place-card__image-wrapper">
                   <Link to={`/offer/${offer.id}`}>
                     <img
@@ -70,9 +77,11 @@ function Cities() {
               </article>
             ))}
           </div>
-        </section>
+        </div>
+
+        {/* Right Section for Map (Sans Tri) */}
         <div className="cities__right-section" style={{ flex: 1 }}>
-          <Map offers={filteredOffers} activeOfferId={activeOfferId} />
+          <Map offers={filteredOffers} activeOfferId={activeOfferId} /> {/* Carte avec les offres non triées */}
         </div>
       </div>
     </div>

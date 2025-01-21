@@ -22,7 +22,7 @@ export const OFFERS_MOCK: OfferType[] = [
     },
     isFavorite: false,
     isPremium: false,
-    rating: 4,
+    rating: 5,
     previewImage: 'img/apartment-01.jpg',
     features: {
       wifi: true,
@@ -127,7 +127,7 @@ export const OFFERS_MOCK: OfferType[] = [
     },
     isFavorite: false,
     isPremium: true,
-    rating: 4.6,
+    rating: 3,
     previewImage: 'img/apartment-01.jpg',
     features: {
       wifi: true,
@@ -162,7 +162,7 @@ export const OFFERS_MOCK: OfferType[] = [
     },
     isFavorite: true,
     isPremium: true,
-    rating: 5.0,
+    rating: 2,
     previewImage: 'img/apartment-01.jpg',
     features: {
       wifi: true,
