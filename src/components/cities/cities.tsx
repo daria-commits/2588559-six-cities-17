@@ -79,7 +79,7 @@ function Cities() {
           </div>
         </div>
 
-        {/* Right Section for Map (Sans Tri) */}
+
         <div className="cities__right-section" style={{ flex: 1 }}>
           <Map offers={filteredOffers} activeOfferId={activeOfferId} /> {/* Carte avec les offres non triées */}
         </div>
