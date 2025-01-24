@@ -49,4 +49,8 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(changeSorting, (state, action) => {
       state.currentSort = action.payload; // Met à jour le type de tri
     });
+  //.addCase(fetchOfferById.rejected, (state, action) => {
+  // state.status = 'rejected';
+  // state.error = action.error.message || 'eroor';
+  //});
 });

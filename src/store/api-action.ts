@@ -10,4 +10,10 @@ export const fetchOffers = createAsyncThunk<OfferType[], void, { extra: AxiosIns
     const { data } = await api.get<OfferType[]>(APIRoute.Offers);
     return data;
   }
+  //export const fetchOfferById = createAsyncThunk<OfferType, string, { extra: AxiosInstance }>(
+  //'offers/fetchOfferById',
+  //async (id: string, { extra: api }) => {
+  // const { data } = await api.getOfferById(id);  // Appel à la méthode créée dans `createAPI.ts`
+  // return data;
+
 );

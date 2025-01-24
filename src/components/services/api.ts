@@ -21,6 +21,8 @@ export const createAPI = (): AxiosInstance => {
       return config;
     }
   );
-
+  //api.getOfferById = (offerId: string) => {
+  // return api.get(`/offers/${offerId}`);
+  //};
   return api;
 };
