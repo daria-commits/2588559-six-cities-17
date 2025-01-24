@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Main from '../../pages/main/main';
 import Favorites from 'src/pages/favorites/favorites';
@@ -27,3 +26,4 @@ function App({ offers }: Props) {
 }
 
 export default App;
+

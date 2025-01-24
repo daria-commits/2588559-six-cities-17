@@ -1,32 +1,52 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { onCityChange, loadOffers } from './action';
-import { OfferType } from 'src/types';
-import { changeSorting } from './action';
+import { onCityChange, changeSorting } from './action';
 import { SortItem } from 'src/const';
+import { fetchOffers } from './api-action'; // Assurez-vous que `fetchOffers` est bien importé.
+import { OfferType } from 'src/types';
+
 interface State {
   activeCity: string;
   offers: OfferType[];
   currentSort: SortItem;
+  status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
+  error: string | null;
 }
 
 const initialState: State = {
   activeCity: 'Paris',
-  offers: [] as OfferType[],
-  currentSort: SortItem.Popular
+  offers: [],
+  currentSort: SortItem.Popular,
+  status: 'idle',
+  error: null,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
   builder
+    // Met à jour la ville active
     .addCase(onCityChange, (state, action) => {
       state.activeCity = action.payload;
     })
-    .addCase(loadOffers, (state, action) => {
-      state.offers = action.payload;
+
+    // Fetch Offers - Pending
+    .addCase(fetchOffers.pending, (state) => {
+      state.status = 'pending';
+      state.error = null; // Réinitialise l'erreur s'il y en avait
     })
+
+    // Fetch Offers - Fulfilled
+    .addCase(fetchOffers.fulfilled, (state, action) => {
+      state.status = 'fulfilled';
+      state.offers = action.payload; // Charge les nouvelles offres
+    })
+
+    // Fetch Offers - Rejected
+    .addCase(fetchOffers.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.error = action.error.message || 'Une erreur est survenue';
+    })
+
+    // Change Sorting
     .addCase(changeSorting, (state, action) => {
-      state.currentSort = action.payload;
+      state.currentSort = action.payload; // Met à jour le type de tri
     });
 });
-
-
-//Reducer — это чистая функция, которая принимает текущее состояние и действие (action), а затем возвращает новое состояние. Это ядро Redux, где происходит обновление состояния.
