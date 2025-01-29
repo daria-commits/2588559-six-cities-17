@@ -15,6 +15,7 @@ export enum SortItem {
 
 export enum APIRoute {
   Offers = '/offers',
+  OfferById = '/offers/${offerId}',
 }
 export const AppRoutes = {
   Main: '/',

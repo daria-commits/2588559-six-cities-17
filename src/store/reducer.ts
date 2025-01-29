@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { onCityChange, changeSorting } from './action';
 import { SortItem } from 'src/const';
-import { fetchOffers } from './api-action'; // Assurez-vous que `fetchOffers` est bien importé.
+import { fetchOffers, fetchOfferById } from './api-action';
 import { OfferType } from 'src/types';
 
 interface State {
@@ -10,6 +10,7 @@ interface State {
   currentSort: SortItem;
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
   error: string | null;
+  currentOffer: OfferType | null;
 }
 
 const initialState: State = {
@@ -18,39 +19,53 @@ const initialState: State = {
   currentSort: SortItem.Popular,
   status: 'idle',
   error: null,
+  currentOffer: null,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
   builder
-    // Met à jour la ville active
+
     .addCase(onCityChange, (state, action) => {
       state.activeCity = action.payload;
     })
 
-    // Fetch Offers - Pending
     .addCase(fetchOffers.pending, (state) => {
       state.status = 'pending';
-      state.error = null; // Réinitialise l'erreur s'il y en avait
+      state.error = null;
     })
 
-    // Fetch Offers - Fulfilled
+
     .addCase(fetchOffers.fulfilled, (state, action) => {
       state.status = 'fulfilled';
       state.offers = action.payload; // Charge les nouvelles offres
     })
 
-    // Fetch Offers - Rejected
     .addCase(fetchOffers.rejected, (state, action) => {
       state.status = 'rejected';
       state.error = action.error.message || 'Une erreur est survenue';
     })
 
-    // Change Sorting
+
     .addCase(changeSorting, (state, action) => {
-      state.currentSort = action.payload; // Met à jour le type de tri
+      state.currentSort = action.payload;
+    })
+
+
+    .addCase(fetchOfferById.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+      state.currentOffer = null;
+    })
+
+    .addCase(fetchOfferById.fulfilled, (state, action) => {
+      state.status = 'fulfilled';
+      state.currentOffer = action.payload;
+    })
+
+
+    .addCase(fetchOfferById.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.error = action.error.message || 'Une erreur est survenue lors de la récupération de l\'offre';
+      state.currentOffer = null;
     });
-  //.addCase(fetchOfferById.rejected, (state, action) => {
-  // state.status = 'rejected';
-  // state.error = action.error.message || 'eroor';
-  //});
 });

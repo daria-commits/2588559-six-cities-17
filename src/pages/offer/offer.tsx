@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
 import AddCommentForm from 'src/components/add-comment-form/add-comment-form';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store';
-import { OfferType } from 'src/types';
+import { fetchOfferById } from 'src/store/api-action'; // Assurez-vous que l'action est bien importée
 
 type CommentType = {
   firstname: string;
@@ -12,13 +12,20 @@ type CommentType = {
 
 function Offer() {
   const { id } = useParams<{ id: string }>();
-  const offers = useSelector((state: RootState) => state.offers); // Récupération des offres depuis Redux
-  const foundOffer: OfferType | undefined = offers.find((offer) => offer.id === id);
+  console.log("ID из useParams:", id);
+
+  const dispatch = useDispatch();
+  const offer = useSelector((state: RootState) => state.currentOffer); // Utilisation du store pour l'offre spécifique
   const [comments, setComments] = useState<{ [offerId: string]: CommentType[] }>({});
   const offerId = id || '';
-
-  if (!foundOffer) {
-    return <div>Offer not found</div>;
+  useEffect(() => {
+    if (id) {
+      console.log("Отправляем запрос для id:", id);
+      dispatch(fetchOfferById(id))
+    }
+  }, [dispatch, id]);
+  if (!offer) {
+    return <div>Loading...</div>; // Afficher un message de chargement tant que l'offre n'est pas récupérée
   }
 
   const handleAddComment = (firstname: string, comment: string) => {
@@ -31,89 +38,85 @@ function Offer() {
     });
   };
 
-  // Déstructuration des informations de l'offre, y compris isPremium
-  const { title, type, price, rating, city, isPremium, features } = foundOffer;
+  const { title, type, price, rating, isPremium, description, bedrooms, goods, images, maxAdults, host } = offer;
 
   return (
-    <div className='offer'>
-      <main className='page__main page__main--offer'>
-        <section className='offer'>
-          <div className='offer__gallery-container container'>
-            <div className='offer__gallery'>
-              <div className='offer__image-wrapper'>
-                <img className='offer__image' src='img/room.jpg' alt='Photo studio' />
+    <main className='page__main page__main--offer'>
+      <div className='offer'>
+        <div className='offer__gallery-container container'>
+          <div className='offer__gallery'>
+            {images.map((image, index) => (
+              <div key={index} className='offer__image-wrapper'>
+                <img className='offer__image' src={image} alt={`Offer image ${index + 1}`} />
               </div>
-              <div className='offer__image-wrapper'>
-                <img className='offer__image' src='img/apartment-01.jpg' alt='Apartment photo' />
-              </div>
-              <div className='offer__image-wrapper'>
-                <img className='offer__image' src='img/apartment-02.jpg' alt='Apartment photo' />
-              </div>
-              <div className='offer__image-wrapper'>
-                <img className='offer__image' src='img/apartment-03.jpg' alt='Apartment photo' />
-              </div>
-              <div className='offer__image-wrapper'>
-                <img className='offer__image' src='img/studio-01.jpg' alt='Studio photo' />
-              </div>
-              <div className='offer__image-wrapper'>
-                <img className='offer__image' src='img/apartment-01.jpg' alt='Apartment photo' />
-              </div>
-            </div>
+            ))}
           </div>
+        </div>
 
-          <div className='offer__container container'>
-            <div className='offer__wrapper'>
-              {isPremium && (
-                <div className='offer__mark'>
-                  <span>Premium</span>
-                </div>
-              )}
-              <h1>{title}</h1>
-              <p className='offer__rating-value rating__value'>Rating: {rating} / 5</p>
-              <p>{type}</p>
-              <div className='offer__price'>
-                <b className='offer__price-value'>&euro;{price}</b>
-                <span className='offer__price-text'>&nbsp;per night</span>
+        <div className='offer__container container'>
+          <div className='offer__wrapper'>
+            {isPremium && (
+              <div className='offer__mark'>
+                <span>Premium</span>
               </div>
-              <p>City: {city.name}</p>
-              <section className="offer__inside">
-                <h2 className='offer__inside-title'>What`s` inside</h2>
-                <ul className="offer__inside-list">
-                  {features.wifi && <li className="offer__inside-item">Wi-Fi</li>}
-                  {features.washingMachine && <li className="offer__inside-item">Washing Machine</li>}
-                  {features.towels && <li className="offer__inside-item">Towels</li>}
-                  {features.heating && <li className="offer__inside-item">Heating</li>}
-                  {features.coffeeMachine && <li className="offer__inside-item">Coffee Machine</li>}
-                  {features.babySeat && <li className="offer__inside-item">Baby Seat</li>}
-                  {features.kitchen && <li className="offer__inside-item">Kitchen</li>}
-                  {features.dishwasher && <li className="offer__inside-item">Dishwasher</li>}
-                  {features.cableTV && <li className="offer__inside-item">Cable TV</li>}
-                  {features.fridge && <li className="offer__inside-item">Fridge</li>}
-                </ul>
-              </section>
+            )}
+            <div className="offer__name-wrapper">
+              <h1 className="offer__name">{title}</h1>
+              <button className="offer__bookmark-button button" type="button">   </button>
+            </div>
+            <div className="offer__rating rating">
+              <div className="offer__stars rating__stars"></div>
+              <p className='offer__rating-value rating__value'>Rating: {rating} / 5</p>
+            </div>
+            <p className='offer__features'>{type}</p>
+
+            <div className='offer__price'>
+              <b className='offer__price-value'>&euro;{price}</b>
+              <span className='offer__price-text'>&nbsp;per night</span>
+            </div>
+            <section className="offer__inside">
+              <h2 className='offer__inside-title'>Whats inside</h2>
+              <p>{description}</p> {/* Ajout de la description */}
+              <p>Bedrooms: {bedrooms}</p> {/* Ajout du nombre de chambres */}
+              <p>Max Adults: {maxAdults}</p> {/* Ajout de la capacité maximale d'adultes */}
+              <ul>
+                {goods.map((good, index) => (
+                  <li key={index}>{good}</li>
+                ))}
+              </ul>
+            </section>
+          </div>
+        </div>
+
+        <div className="offer__host">
+          <h2 className="offer__host-title">Meet the host</h2>
+          <div className="offer__host-user user">
+            <p>{host.name}</p>
+            <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+              <img src={host.avatarUrl} alt="Host avatar" />
+              {host.isPro && <span className="offer__user-status">Pro</span>}
             </div>
           </div>
-        </section>
+        </div>
+
         <div className="add-comment">
           <AddCommentForm
             activeOfferId={offerId}
             onAddComment={handleAddComment}
           />
         </div>
+
         <section className="comments">
           <h2>Comments</h2>
-          {comments[offerId]?.map((comment) => (
-            <div
-              key={`${comment.firstname}-${comment.comment}`}
-              className="comment"
-            >
+          {comments[offerId]?.map((comment, index) => (
+            <div key={index} className="comment">
               <p><strong>{comment.firstname}</strong> says:</p>
               <p>{comment.comment}</p>
             </div>
           ))}
         </section>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
 

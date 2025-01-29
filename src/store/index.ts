@@ -9,9 +9,9 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       thunk: {
-        extraArgument: api, // Passer l'API comme extra argument pour les thunks
+        extraArgument: api,
       },
-      serializableCheck: false, // Optionnel, si vous avez des objets non sérialisables dans votre état
+      serializableCheck: false,
     }),
 });
 
