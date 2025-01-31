@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store';
 import { fetchOfferById } from 'src/store/api-action'; // Assurez-vous que l'action est bien importée
-
+import { OfferType } from 'src/types';
 type CommentType = {
   firstname: string;
   comment: string;
@@ -13,20 +13,24 @@ type CommentType = {
 function Offer() {
   const { id } = useParams<{ id: string }>();
   console.log("ID из useParams:", id);
+  const offer = useSelector((state: RootState) => state.currentOffer);
 
   const dispatch = useDispatch();
-  const offer = useSelector((state: RootState) => state.currentOffer); // Utilisation du store pour l'offre spécifique
   const [comments, setComments] = useState<{ [offerId: string]: CommentType[] }>({});
   const offerId = id || '';
   useEffect(() => {
     if (id) {
       console.log("Отправляем запрос для id:", id);
       dispatch(fetchOfferById(id))
+        .unwrap()
+        .then((data) => console.log("Получены данные offer:", data))
+        .catch((error) => console.error("Ошибка загрузки offer:", error));
     }
   }, [dispatch, id]);
   if (!offer) {
-    return <div>Loading...</div>; // Afficher un message de chargement tant que l'offre n'est pas récupérée
+    return <div>Loading...</div>;
   }
+  
 
   const handleAddComment = (firstname: string, comment: string) => {
     setComments((prevComments) => {

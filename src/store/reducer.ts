@@ -9,6 +9,10 @@ interface State {
   offers: OfferType[];
   currentSort: SortItem;
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
+//'idle'	Не выполняется ни один запрос, состояние "по умолчанию"	После инициализации приложения, до первого запроса
+//'pending'	Запрос выполняется (идет загрузка данных)	Когда начинается fetchOffers.pending или fetchOfferById.pending
+//'fulfilled'	Запрос успешно выполнен, данные получены	Когда сервер вернул успешный ответ (200 OK), данные загружены
+//'rejected'	Запрос завершился ошибкой (например, сервер недоступен)	Когда сервер вернул ошибку (404, 500 и т. д.), или произошел сбой сети
   error: string | null;
   currentOffer: OfferType | null;
 }

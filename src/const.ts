@@ -15,13 +15,13 @@ export enum SortItem {
 
 export enum APIRoute {
   Offers = '/offers',
-  OfferById = '/offers/${offerId}',
+  OfferById = '/offers/:id',
 }
 export const AppRoutes = {
   Main: '/',
   Login: '/login',
   Favorites: '/favorites',
-  Offer: 'offer/:id'
+  Offer: 'offers/:id'
 
 } as const;
 
