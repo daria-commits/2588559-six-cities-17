@@ -10,7 +10,7 @@ function Offer() {
 
   const offer = useAppSelector((state: RootState) => state.currentOffer);
   const dispatch = useAppDispatch();
-  const offerId = id || '';
+
 
   useEffect(() => {
     if (id) {
@@ -89,7 +89,6 @@ function Offer() {
             </div>
           </div>
         </div>
-        <section className="offer__map map"></section>
       </section>
       <div className="container">Neighbourhood {offer.city.name}</div>
     </main>
