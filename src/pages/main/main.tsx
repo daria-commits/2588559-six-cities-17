@@ -4,12 +4,13 @@ import Cities from 'src/components/cities/cities';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'src/store';
 import { loadOffers } from 'src/store/action';
-import { OfferType } from 'src/types';
+import { useAppSelector } from 'src/components/hooks/store';
 
 
-function Main({ offers }: { offers: OfferType[] }) {
+function Main() {
   const activeCity = useSelector((state: RootState) => state.activeCity); // Ville active depuis Redux
   const dispatch = useDispatch();
+  const offers = useAppSelector((state) => state.offers);
 
 
   React.useEffect(() => {

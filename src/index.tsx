@@ -7,28 +7,28 @@ import { fetchOffers } from './store/api-action';
 import { RootState } from './store';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+store.dispatch(fetchOffers());
+//const AppWithOffers = () => {
+// const dispatch = useDispatch();
+//const offers = useSelector((state: RootState) => state.offers);
+//const status = useSelector((state: RootState) => state.status);
 
-const AppWithOffers = () => {
-  const dispatch = useDispatch();
-  const offers = useSelector((state: RootState) => state.offers);
-  const status = useSelector((state: RootState) => state.status);
 
+// useEffect(() => {
+// dispatch(fetchOffers());
+// }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(fetchOffers());
-  }, [dispatch]);
+//if (status === 'pending') {
+// return <div>Loading...</div>;
+// }
 
-  if (status === 'pending') {
-    return <div>Loading...</div>;
-  }
-
-  return <App offers={offers} />;
-};
+//return <App offers={offers} />;
+//};
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <AppWithOffers />
+      <App />
     </Provider>
   </React.StrictMode>
 );

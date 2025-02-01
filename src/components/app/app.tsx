@@ -1,22 +1,19 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Main from '../../pages/main/main';
+
 import Favorites from 'src/pages/favorites/favorites';
 import Login from 'src/pages/login/login';
 import Offer from 'src/pages/offer/offer';
 import Layout from 'src/components/layout/layout';
-import { OfferType } from 'src/types';
+import Main from 'src/pages/main/main';
 
-type Props = {
-  offers: OfferType[];
-};
 
-function App({ offers }: Props) {
+function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Main offers={offers} />} />
-          <Route path="favorites" element={<Favorites offers={offers} />} />
+          <Route index element={<Main />} />
+          <Route path="favorites" element={<Favorites />} />
           <Route path="login" element={<Login />} />
           <Route path="offer/:id" element={<Offer />} />
         </Route>
