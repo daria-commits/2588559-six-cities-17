@@ -8,9 +8,10 @@ import { useAppSelector } from 'src/components/hooks/store';
 
 
 function Main() {
-  const activeCity = useSelector((state: RootState) => state.activeCity); // Ville active depuis Redux
+  const activeCity = useSelector((state: RootState) => state.user.activeCity);
+  const offers = useAppSelector((state) => state.user.offers);
+
   const dispatch = useDispatch();
-  const offers = useAppSelector((state) => state.offers);
 
 
   React.useEffect(() => {

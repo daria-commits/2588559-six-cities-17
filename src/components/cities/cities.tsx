@@ -7,11 +7,9 @@ import Sorting from '../sorting/sorting';
 import { sortBy } from 'src/helper';
 function Cities() {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
-  const offers = useSelector((state: RootState) => state.offers);
-  const activeCity = useSelector((state: RootState) => state.activeCity);
-  const currentSort = useSelector((state: RootState) => state.currentSort);
-
-
+  const offers = useSelector((state: RootState) => state.user.offers);
+  const activeCity = useSelector((state: RootState) => state.user.activeCity);
+  const currentSort = useSelector((state: RootState) => state.user.currentSort);
   const filteredOffers = offers.filter((offer) => offer.city.name === activeCity);
 
 

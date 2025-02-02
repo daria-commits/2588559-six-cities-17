@@ -1,20 +1,22 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { onCityChange, changeSorting } from './action';
+import { onCityChange, changeSorting, changeAuthorizationStatus, setUserAuth, logoutUser } from './action';
 import { SortItem } from 'src/const';
 import { fetchOffers, fetchOfferById } from './api-action';
 import { OfferType } from 'src/types';
+import { AuthStatus } from 'src/const';
+
+export type AuthStatusType = (typeof AuthStatus)[keyof typeof AuthStatus];
 
 interface State {
   activeCity: string;
   offers: OfferType[];
   currentSort: SortItem;
   status: 'idle' | 'pending' | 'fulfilled' | 'rejected';
-//'idle'	Не выполняется ни один запрос, состояние "по умолчанию"	После инициализации приложения, до первого запроса
-//'pending'	Запрос выполняется (идет загрузка данных)	Когда начинается fetchOffers.pending или fetchOfferById.pending
-//'fulfilled'	Запрос успешно выполнен, данные получены	Когда сервер вернул успешный ответ (200 OK), данные загружены
-//'rejected'	Запрос завершился ошибкой (например, сервер недоступен)	Когда сервер вернул ошибку (404, 500 и т. д.), или произошел сбой сети
   error: string | null;
   currentOffer: OfferType | null;
+  authorizationStatus: AuthStatusType;
+  userEmail: string | null;
+  token: string | null;
 }
 
 const initialState: State = {
@@ -24,52 +26,59 @@ const initialState: State = {
   status: 'idle',
   error: null,
   currentOffer: null,
+  authorizationStatus: AuthStatus.NoAuth,
+  userEmail: null,
+  token: null,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
   builder
-
     .addCase(onCityChange, (state, action) => {
       state.activeCity = action.payload;
     })
-
     .addCase(fetchOffers.pending, (state) => {
       state.status = 'pending';
       state.error = null;
     })
-
-
     .addCase(fetchOffers.fulfilled, (state, action) => {
       state.status = 'fulfilled';
-      state.offers = action.payload; // Charge les nouvelles offres
+      state.offers = action.payload;
     })
-
     .addCase(fetchOffers.rejected, (state, action) => {
       state.status = 'rejected';
       state.error = action.error.message || 'Une erreur est survenue';
     })
-
-
     .addCase(changeSorting, (state, action) => {
       state.currentSort = action.payload;
     })
-
-
     .addCase(fetchOfferById.pending, (state) => {
       state.status = 'pending';
       state.error = null;
       state.currentOffer = null;
     })
-
     .addCase(fetchOfferById.fulfilled, (state, action) => {
       state.status = 'fulfilled';
       state.currentOffer = action.payload;
     })
-
-
     .addCase(fetchOfferById.rejected, (state, action) => {
       state.status = 'rejected';
       state.error = action.error.message || 'Une erreur est survenue lors de la récupération de l\'offre';
       state.currentOffer = null;
+    })
+    .addCase(changeAuthorizationStatus, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setUserAuth, (state, action) => {
+      console.log('setUserAuth payload:', action.payload);
+      state.authorizationStatus = AuthStatus.Auth;
+      state.userEmail = action.payload.email;
+      state.token = action.payload.token;
+      localStorage.setItem('userEmail', action.payload.email);
+    })
+    .addCase(logoutUser, (state) => {
+      state.authorizationStatus = AuthStatus.NoAuth;
+      state.userEmail = null;
+      state.token = null;
+      localStorage.removeItem('userEmail');
     });
 });

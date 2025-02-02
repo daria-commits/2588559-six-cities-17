@@ -1,7 +1,19 @@
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from 'src/store';
+import { AuthStatus } from 'src/const';
+import { logoutUser } from 'src/store/action';
 
-import { Link } from 'react-router-dom';
 function Header() {
+  const authorizationStatus = useSelector((state: RootState) => state.user.authorizationStatus);
+  const userEmail = useSelector((state: RootState) => state.user.userEmail);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate('/');
+  };
 
   return (
     <header className="header">
@@ -14,26 +26,30 @@ function Header() {
           </div>
           <nav className="header__nav">
             <ul className="header__nav-list">
-              <li className="header__nav-item user">
-                <a className="header__nav-link header__nav-link--profile" href="#">
-                  <div className="header__avatar-wrapper user__avatar-wrapper" />
-                  <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  <span className="header__favorite-count">3</span>
-                </a>
-              </li>
-              <li className="header__nav-item">
-                <Link className="header__nav-link" to="/login">
-                  <span className="header__signin">Sign in</span>
-                </Link>
-              </li>
+              {authorizationStatus === AuthStatus.Auth ? (
+                <>
+                  <li className="header__nav-item user">
+                    <span className="header__user-name user__name">{userEmail}</span>
+                  </li>
+                  <li className="header__nav-item">
+                    <button className="header__nav-link" onClick={handleLogout}>
+                      <span className="header__signin">Sign out</span>
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li className="header__nav-item">
+                  <Link className="header__nav-link" to="/login">
+                    <span className="header__signin">Sign in</span>
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
         </div>
       </div>
     </header>
   );
-
 }
-
 
 export default Header;

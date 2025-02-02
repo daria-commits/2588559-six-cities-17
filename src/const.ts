@@ -17,11 +17,22 @@ export enum APIRoute {
   Offers = '/offers',
   OfferId = '/offers/:id',
 }
-export const AppRoutes = {
-  Main: '/',
-  Login: '/login',
-  Favorites: '/favorites',
-  Offer: 'offers/:id'
 
+
+export const AuthStatus = {
+  Auth: 'Auth',
+  NoAuth: 'NoAuth',
+  Login: 'Login',
 } as const;
+
+export interface TLoggerUser {
+  id: string;
+  email: string;
+  token: string;
+}
+
+export type TAuthInfo = {
+  email: string;
+  password: string;
+};
 

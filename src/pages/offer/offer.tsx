@@ -8,7 +8,7 @@ import { fetchOfferById } from 'src/store/api-action';
 function Offer() {
   const { id } = useParams<{ id: string }>();
 
-  const offer = useAppSelector((state: RootState) => state.currentOffer);
+  const offer = useAppSelector((state: RootState) => state.currentOffer.currentOffer);
   const dispatch = useAppDispatch();
 
 
@@ -17,6 +17,10 @@ function Offer() {
       dispatch(fetchOfferById(id));
     }
   }, [dispatch, id]);
+
+  if (status === 'pending') {
+    return <div>Loading...</div>;
+  }
 
   if (!offer) {
     return <div>No offer found.</div>;

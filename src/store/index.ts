@@ -1,11 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { reducer } from './reducer'; // Предполагается, что вы уже правильно настроили редьюсер
-import { createAPI } from '../components/services/api'; // Убедитесь, что путь правильный
+import { reducer } from './reducer';
+import { createAPI } from '../components/services/api';
 
 const api = createAPI();
 
 export const store = configureStore({
-  reducer,
+  reducer: {
+    user: reducer,
+    currentOffer: reducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       thunk: {
@@ -15,8 +18,8 @@ export const store = configureStore({
     }),
 });
 
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export type ThunkExtraArgument = typeof api;
-
 

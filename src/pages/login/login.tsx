@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from 'src/components/hooks/store';
+
+import { loginAction } from 'src/store/api-action';
 
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (emailRef.current && passwordRef.current) {
+      dispatch(loginAction({
+        email:emailRef.current.value,
+        password: passwordRef.current.value
+      }))
+        .then((response)=>{
+          if (response.meta.requestStatus === 'fulfilled'){
+            navigate('/');
+          }
+        });
+    }
 
   };
 
@@ -35,8 +52,7 @@ function Login() {
                   id="email"
                   name="email"
                   placeholder="Email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  ref={emailRef}
                   required
                 />
               </div>
@@ -48,8 +64,7 @@ function Login() {
                   id="password"
                   name="password"
                   placeholder="Password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
+                  ref={passwordRef}
                   required
                 />
               </div>
