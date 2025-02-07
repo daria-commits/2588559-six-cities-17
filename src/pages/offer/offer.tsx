@@ -8,7 +8,7 @@ import { fetchOfferById } from 'src/store/api-action';
 function Offer() {
   const { id } = useParams<{ id: string }>();
 
-  const offer = useAppSelector((state: RootState) => state.currentOffer.currentOffer);
+  const offer = useAppSelector((state: RootState) => state.currentOffer);
   const dispatch = useAppDispatch();
 
 

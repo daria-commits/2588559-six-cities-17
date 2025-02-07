@@ -5,10 +5,7 @@ import { createAPI } from '../components/services/api';
 const api = createAPI();
 
 export const store = configureStore({
-  reducer: {
-    user: reducer,
-    currentOffer: reducer,
-  },
+  reducer: reducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       thunk: {

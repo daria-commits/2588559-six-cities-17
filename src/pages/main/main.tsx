@@ -8,8 +8,8 @@ import { useAppSelector } from 'src/components/hooks/store';
 
 
 function Main() {
-  const activeCity = useSelector((state: RootState) => state.user.activeCity);
-  const offers = useAppSelector((state) => state.user.offers);
+  const activeCity = useSelector((state: RootState) => state.activeCity);
+  const offers = useAppSelector((state) => state.offers);
 
   const dispatch = useDispatch();
 

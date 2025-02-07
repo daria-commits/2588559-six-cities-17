@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, MutableRefObject } from 'react';
-import { Map as LeafletMap, TileLayer, map as createMap } from 'leaflet';
+import L, { Map as LeafletMap, TileLayer, map as createMap } from 'leaflet';
 import { OfferType } from 'src/types';
 
 function useMap(
@@ -9,6 +9,10 @@ function useMap(
 ): LeafletMap | null {
   const [map, setMap] = useState<LeafletMap | null>(null);
   const isRenderedRef = useRef(false);
+
+  useEffect (()=>{
+    map?.panTo(new L.LatLng(city.location.latitude, city.location.longitude), { animate: true });
+  }, [city,map]);
 
   useEffect(() => {
 

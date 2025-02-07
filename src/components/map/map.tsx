@@ -4,7 +4,7 @@ import useMap from '../usemap/usemap';
 import { OfferType } from 'src/types';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../const';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
   iconSize: [40, 40],
@@ -23,9 +23,9 @@ type MapProps = {
 };
 
 function Map({ offers, activeOfferId }: MapProps) {
-  const mapRef = useRef(null); // позволяет передать DOM-элемент в библиотеку Leaflet для отображения карты.
+  const mapRef = useRef(null);
 
-  const map = useMap(mapRef, offers[0].city); //начальное местоположение карты
+  const map = useMap(mapRef, offers[0].city);
 
   useEffect(() => {
     if (map) {
@@ -43,9 +43,9 @@ function Map({ offers, activeOfferId }: MapProps) {
           )
           .addTo(markerLayer);
 
-        if (offer.id === activeOfferId) {
-          map.panTo(new L.LatLng(offer.location.latitude, offer.location.longitude), { animate: true });
-        }
+        // if (offer.id === activeOfferId) {
+        //   map.panTo(new L.LatLng(offer.location.latitude, offer.location.longitude), { animate: true });
+        // }
       });
 
       return () => {

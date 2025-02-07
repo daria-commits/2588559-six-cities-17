@@ -5,8 +5,8 @@ import { AuthStatus } from 'src/const';
 import { logoutUser } from 'src/store/action';
 
 function Header() {
-  const authorizationStatus = useSelector((state: RootState) => state.user.authorizationStatus);
-  const userEmail = useSelector((state: RootState) => state.user.userEmail);
+  const authorizationStatus = useSelector((state: RootState) => state.authorizationStatus);
+  const userEmail = useSelector((state: RootState) => state.userEmail);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
@@ -29,7 +29,12 @@ function Header() {
               {authorizationStatus === AuthStatus.Auth ? (
                 <>
                   <li className="header__nav-item user">
-                    <span className="header__user-name user__name">{userEmail}</span>
+                    <a className="header__nav-link header__nav-link--profile" href="#">
+                      <div className="header__avatar-wrapper user__avatar-wrapper">
+                      </div>
+                      <span className="header__user-name user__name">{userEmail}</span>
+                      <span className="header__favorite-count">3</span>
+                    </a>
                   </li>
                   <li className="header__nav-item">
                     <button className="header__nav-link" onClick={handleLogout}>
