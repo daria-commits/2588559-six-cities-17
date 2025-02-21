@@ -21,9 +21,9 @@ function Cities() {
 
   return (
     <div className="cities">
-      <div className="cities__places-container container" style={{ display: 'flex', flexDirection: 'row' }}>
-        {/* Left Section for Offers */}
-        <div className="cities__places-list-container" style={{ flex: 1, paddingRight: '20px' }}>
+      <div className="cities__places-container container">
+
+        <section className="cities__places places">
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">
             {filteredOffers.length} places to stay in {activeCity}
@@ -75,11 +75,11 @@ function Cities() {
               </article>
             ))}
           </div>
-        </div>
+        </section>
 
 
-        <div className="cities__right-section" style={{ flex: 1 }}>
-          <Map offers={filteredOffers} activeOfferId={activeOfferId} /> {/* Carte avec les offres non triées */}
+        <div className="cities__right-section">
+          <Map offers={filteredOffers} activeOfferId={activeOfferId} />
         </div>
       </div>
     </div>

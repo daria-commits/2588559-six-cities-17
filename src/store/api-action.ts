@@ -4,9 +4,7 @@ import { APIRoute } from 'src/const';
 import { OfferType } from 'src/types';
 import { AppDispatch, RootState } from '.';
 import { changeAuthorizationStatus, setUserAuth} from './action';
-import { AuthStatus } from 'src/const';
-import { TLoggerUser } from 'src/const';
-import { TAuthInfo } from 'src/const';
+import { AuthStatus, TLoggerUser, TAuthInfo } from 'src/const';
 import { saveToken } from 'src/components/services/token';
 import { dropToken } from 'src/components/services/token';
 
@@ -34,9 +32,11 @@ export const loginAction = createAsyncThunk<TLoggerUser, TAuthInfo, ThunkArgs>(
   'user/login',
   async ({ email, password }, { dispatch, extra: api }) => {
     try {
+      const { data } = await api.post<TLoggerUser>(
+        '/login',
+        { email, password }
 
-      const { data } = await api.post<TLoggerUser>('/login', { email, password });
-
+      );
 
       saveToken(data.token);
 
@@ -58,8 +58,7 @@ export const logoutAction = createAsyncThunk<void, undefined, ThunkArgs>(
   async (_, { dispatch, extra: api }) => {
     try {
 
-      await api.delete('/');
-
+      await api.delete(APIRoute.Logout);
 
       dropToken();
 
