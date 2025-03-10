@@ -26,6 +26,7 @@ export const AuthStatus = {
   Login: 'Login',
 } as const;
 
+
 export interface TLoggerUser {
   id: string;
   email: string;

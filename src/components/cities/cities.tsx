@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useAppSelector } from '../hooks/store';
 import { RootState } from '../../store';
 import Map from '../map/map';
 import { Link } from 'react-router-dom';
@@ -7,9 +8,10 @@ import Sorting from '../sorting/sorting';
 import { sortBy } from 'src/helper';
 function Cities() {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
-  const offers = useSelector((state: RootState) => state.offers);
-  const activeCity = useSelector((state: RootState) => state.activeCity);
-  const currentSort = useSelector((state: RootState) => state.currentSort);
+  const offers = useAppSelector((state: RootState) => state.offers.offers);
+  const activeCity = useSelector((state: RootState) => state.city.activeCity);
+  const currentSort = useSelector((state: RootState) => state.sorting.currentSort);
+
   const filteredOffers = offers.filter((offer) => offer.city.name === activeCity);
 
 

@@ -8,6 +8,7 @@ import { AuthStatus, TLoggerUser, TAuthInfo } from 'src/const';
 import { saveToken } from 'src/components/services/token';
 import { dropToken } from 'src/components/services/token';
 
+
 type ThunkArgs = {
   dispatch: AppDispatch;
   state: RootState;
@@ -80,6 +81,7 @@ export const fetchOffers = createAsyncThunk<OfferType[], void, ThunkArgs>(
 export const fetchOfferById = createAsyncThunk<OfferType, string, ThunkArgs>(
   'offers/fetchOfferById',
   async (offerId: string, { extra: api}) => {
+    console.log(`Fetching offer from API: /offers/${offerId}`);
     const response = await api.get<OfferType>(`/offers/${offerId}`);
     return response.data;
   }

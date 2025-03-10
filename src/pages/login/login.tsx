@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'src/components/hooks/store';
 
 import { loginAction } from 'src/store/api-action';
-
+import { useCallback } from 'react';
 
 function Login() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -11,26 +11,23 @@ function Login() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = useCallback((event: React.FormEvent) => {
     event.preventDefault();
     if (emailRef.current && passwordRef.current) {
-      try {
-        const response = await dispatch(loginAction({
-          email: emailRef.current.value,
-          password: passwordRef.current.value,
-        }));
+      dispatch(loginAction({
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      })).then((response) => {
         if (response.meta.requestStatus === 'fulfilled') {
           navigate('/');
         } else {
-          // Ajoute ici un message d'erreur si la connexion échoue
           console.error('Login failed');
         }
-      } catch (error) {
+      }).catch((error) => {
         console.error('Login error', error);
-      }
+      });
     }
-  };
-
+  }, [dispatch, navigate]);
   return (
     <main className="page__main page__main--login">
       <div className="page__login-container container">

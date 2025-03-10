@@ -4,13 +4,11 @@ import { useAppDispatch , useAppSelector } from 'src/components/hooks/store';
 import { RootState } from 'src/store';
 import { fetchOfferById } from 'src/store/api-action';
 
-
 function Offer() {
   const { id } = useParams<{ id: string }>();
-
-  const offer = useAppSelector((state: RootState) => state.currentOffer);
+  const offer = useAppSelector((state: RootState) => state.offerById.currentOffer);
+  const fetchOfferStatus = useAppSelector((state: RootState) => state.offerById.fetchOfferStatus);
   const dispatch = useAppDispatch();
-
 
   useEffect(() => {
     if (id) {
@@ -18,7 +16,7 @@ function Offer() {
     }
   }, [dispatch, id]);
 
-  if (status === 'pending') {
+  if (fetchOfferStatus === 'pending') {
     return <div>Loading...</div>;
   }
 
