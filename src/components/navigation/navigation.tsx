@@ -1,11 +1,12 @@
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { onCityChange } from '../../store/action';
-import { RootState } from '../../store';
+import { getActiveCity } from 'src/store/active-city-reducer/selectors';
+import { useAppSelector } from '../hooks/store';
 
 function Navigation() {
   const dispatch = useDispatch();
-  const activeCity = useSelector((state: RootState) => state.activeCity);
+  const activeCity = useAppSelector(getActiveCity);
 
   const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 

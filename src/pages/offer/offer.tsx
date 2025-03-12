@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch , useAppSelector } from 'src/components/hooks/store';
-import { RootState } from 'src/store';
 import { fetchOfferById } from 'src/store/api-action';
-
+import { selectCurrentOffer } from 'src/store/offerbyid-reducer/selectors';
+import { selectOfferFetchStatus } from 'src/store/offerbyid-reducer/selectors';
 function Offer() {
   const { id } = useParams<{ id: string }>();
-  const offer = useAppSelector((state: RootState) => state.offerById.currentOffer);
-  const fetchOfferStatus = useAppSelector((state: RootState) => state.offerById.fetchOfferStatus);
+  const offer = useAppSelector(selectCurrentOffer);
+  const fetchOfferStatus = useAppSelector(selectOfferFetchStatus);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

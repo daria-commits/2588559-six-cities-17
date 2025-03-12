@@ -1,27 +1,8 @@
 import { selectCurrentOffer, selectOfferFetchStatus, selectOfferError } from './selectors';
-import { RootState } from '..';
-import { SortItem } from 'src/const';
+
 
 describe('offerById selectors', () => {
-  const mockState: RootState = {
-    auth: {
-      authorizationStatus: 'NoAuth',
-      userEmail: null,
-      token: null,
-    },
-    city: {
-      activeCity: 'Paris',
-    },
-    offers: {
-      offers: [],
-      fetchOffersStatus: 'idle',
-      error: null,
-      currentOffer: null,
-      token: null,
-    },
-    sorting: {
-      currentSort: SortItem.Popular,
-    },
+  const mockState = {
     offerById: {
       currentOffer: {
         id: '1',
@@ -43,7 +24,7 @@ describe('offerById selectors', () => {
         images: ['image1.jpg', 'image2.jpg'],
         maxAdults: 4,
       },
-      fetchOfferStatus: 'fulfilled',
+      fetchOfferStatus: 'fulfilled' as 'idle' | 'pending' | 'fulfilled' | 'rejected',
       error: null,
     },
   };

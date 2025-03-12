@@ -1,37 +1,26 @@
-import { RootState } from '..';
+
 import { selectCurrentSort } from './selectors';
-import { SortItem } from 'src/const';
+import { SortItem } from '../../const';
+import sortingReducer from './sortingSlice';
+import { changeSorting } from '../action';
 
-describe('sorting selectors', () => {
-  const mockState: RootState = {
-    sorting: {
-      currentSort: SortItem.Popular,
-    },
+const etatInitial: { currentSort: SortItem } = { currentSort: SortItem.Popular };
 
-    auth: {
-      authorizationStatus: 'NoAuth',
-      userEmail: null,
-      token: null,
-    },
-    city: {
-      activeCity: 'Paris',
-    },
-    offers: {
-      offers: [],
-      fetchOffersStatus: 'idle',
-      error: null,
-      currentOffer: null,
-      token: null,
-    },
-    offerById: {
-      currentOffer: null,
-      fetchOfferStatus: 'idle',
-      error: null,
-    },
-  };
 
-  it('devrait retourner la valeur actuelle du tri', () => {
-    const currentSort = selectCurrentSort(mockState);
-    expect(currentSort).toBe(SortItem.Popular);
+describe('Réducteur sortingSlice', () => {
+  it('doit retourner l\'état initial lorsqu\'une action inconnue est fournie', () => {
+    expect(sortingReducer(undefined, { type: 'unknown' })).toEqual(etatInitial);
+  });
+  it('doit gérer changeSorting', () => {
+    const action = changeSorting(SortItem.PriceLow);
+    const nouvelEtat = sortingReducer(etatInitial, action);
+    expect(nouvelEtat).toEqual({ currentSort: SortItem.PriceLow });
+  });
+});
+
+describe('Sélecteurs sortingSlice', () => {
+  it('doit sélectionner l’option de tri actuelle', () => {
+    const etatSimule = { sorting: { currentSort: SortItem.Rating } };
+    expect(selectCurrentSort(etatSimule)).toEqual(SortItem.Rating);
   });
 });

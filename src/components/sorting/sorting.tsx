@@ -1,12 +1,12 @@
 import { SortItem } from 'src/const';
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { RootState } from 'src/store/index';
+import { selectCurrentSort } from 'src/store/sorting-reducer/selectors';
 import { changeSorting } from 'src/store/action';
 import { useSelector } from 'react-redux';
 
 function Sorting() {
-  const currentSort = useSelector((state: RootState) => state.currentSort);
+  const currentSort = useSelector(selectCurrentSort);
   const [isMenuOpened, setMenuOpened] = useState(false);
   const sortSpanRef = useRef<HTMLSpanElement>(null);
   const dispatch = useDispatch();

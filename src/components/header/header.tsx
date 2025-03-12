@@ -1,17 +1,17 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from 'src/store';
+import { useSelector} from 'react-redux';
 import { AuthStatus } from 'src/const';
 import { logoutAction } from 'src/store/api-action';
-
+import { getAuthStatus, getUserEmail } from 'src/store/auth-reducer/selectors';
+import { useAppSelector,useAppDispatch } from '../hooks/store';
 type HeaderProps = {
   showNav: boolean;
 
 }
 function Header({ showNav }: HeaderProps) {
-  const authorizationStatus = useSelector((state: RootState) => state.authorizationStatus);
-  const userEmail = useSelector((state: RootState) => state.userEmail);
-  const dispatch = useDispatch<AppDispatch>();
+  const authorizationStatus = useSelector(getAuthStatus);
+  const userEmail = useAppSelector(getUserEmail);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {

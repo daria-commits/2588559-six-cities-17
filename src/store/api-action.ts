@@ -1,12 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosInstance } from 'axios';
-import { APIRoute } from 'src/const';
+import { AxiosError, AxiosInstance } from 'axios';
+import { APIRoute } from '../../src/const';
 import { OfferType } from 'src/types';
 import { AppDispatch, RootState } from '.';
 import { changeAuthorizationStatus, setUserAuth} from './action';
-import { AuthStatus, TLoggerUser, TAuthInfo } from 'src/const';
-import { saveToken } from 'src/components/services/token';
-import { dropToken } from 'src/components/services/token';
+import { AuthStatus, TLoggerUser, TAuthInfo } from '../../src/const';
+import { saveToken } from '../../src/components/services/token';
+import { dropToken } from '../../src/components/services/token';
 
 
 type ThunkArgs = {
@@ -58,15 +58,17 @@ export const logoutAction = createAsyncThunk<void, undefined, ThunkArgs>(
   'user/logout',
   async (_, { dispatch, extra: api }) => {
     try {
-
       await api.delete(APIRoute.Logout);
-
       dropToken();
-
-
       dispatch(changeAuthorizationStatus(AuthStatus.NoAuth));
     } catch (error) {
-      console.error('Logout failed:', error.response?.data || error.message);
+      if (error instanceof AxiosError) {
+        console.error('Logout failed:', error.response?.data || error.message);
+      } else if (error instanceof Error) {
+        console.error('Logout failed:', error.message);
+      } else {
+        console.error('Logout failed:', error);
+      }
     }
   }
 );

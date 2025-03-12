@@ -1,3 +1,3 @@
 import { RootState } from '..';
 
-export const selectCurrentSort = (state: RootState) => state.sorting.currentSort;
+export const selectCurrentSort = (state: Pick<RootState, 'sorting'>) => state.sorting.currentSort;

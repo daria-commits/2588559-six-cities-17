@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { SortItem } from 'src/const';
+import { SortItem } from '../../const';
 import { changeSorting } from '../action';
 
 interface SortingState {
